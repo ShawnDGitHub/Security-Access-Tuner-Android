@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.rnbasics"
+    namespace "com.shawndgithub.securityaccesstuner"
     defaultConfig {
-        applicationId "com.rnbasics"
+        applicationId "com.shawndgithub.securityaccesstuner"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -92,7 +92,17 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('REACTNATIVE_STORE_FILE')) {
+                storeFile file(REACTNATIVE_STORE_FILE)
+                storePassword REACTNATIVE_STORE_PASSWORD
+                keyAlias REACTNATIVE_KEY_ALIAS
+                keyPassword REACTNATIVE_KEY_PASSWORD
+            }
+        }
+        println "STORE_FILE: " + project.properties['REACTNATIVE_STORE_FILE']
     }
+    
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -100,7 +110,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
